@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
-public class ChunkClaimEvent extends ChunkEvent {
+public class ChunkModifyEvent extends ChunkEvent{
 
 	private static final HandlerList handlers = new HandlerList();
 
@@ -16,7 +16,7 @@ public class ChunkClaimEvent extends ChunkEvent {
 		return handlers;
 	}
 
-	public ChunkClaimEvent(Player p, Chunk ch) {
+	public ChunkModifyEvent(Player p, Chunk ch ){
 		super(p, ch);
 	}
 }
