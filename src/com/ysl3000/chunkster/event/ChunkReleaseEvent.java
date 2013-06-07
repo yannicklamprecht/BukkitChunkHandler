@@ -4,8 +4,6 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
-
-
 public class ChunkReleaseEvent extends ChunkEvent {
 
 	private static final HandlerList handlers = new HandlerList();
@@ -18,7 +16,7 @@ public class ChunkReleaseEvent extends ChunkEvent {
 		return handlers;
 	}
 
-	public ChunkReleaseEvent(Player p, Chunk ch) {
-		super(p, ch);
+	public ChunkReleaseEvent(Player p, Chunk ch, boolean succes) {
+		super(p, ch, succes);
 	}
 }

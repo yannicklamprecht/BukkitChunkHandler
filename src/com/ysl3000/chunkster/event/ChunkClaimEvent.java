@@ -16,7 +16,7 @@ public class ChunkClaimEvent extends ChunkEvent {
 		return handlers;
 	}
 
-	public ChunkClaimEvent(Player p, Chunk ch) {
-		super(p, ch);
+	public ChunkClaimEvent(Player p, Chunk ch, boolean succes) {
+		super(p, ch,succes);
 	}
 }

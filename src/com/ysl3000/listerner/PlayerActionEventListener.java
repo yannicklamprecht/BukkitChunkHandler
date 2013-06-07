@@ -8,8 +8,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+
 import com.ysl3000.chunkdata.ChunkDataHandler;
 import com.ysl3000.chunkdata.PlayerChunkData;
 import com.ysl3000.chunkster.Chunkster;
@@ -23,32 +25,46 @@ public class PlayerActionEventListener implements Listener {
 	}
 
 	@EventHandler
-	public void playmove(PlayerMoveEvent e) {
+	public void playccE(PlayerChunkChangeEvent e) {
+		if (new ChunkDataHandler().loadCurrentChunkData(e.getFrom()) != null
+				&& new ChunkDataHandler().loadCurrentChunkData(e.getTo()) != null) {
 
-		if (e.getFrom().getChunk() != e.getTo().getChunk()) {
-			if (!e.isCancelled()) {
-
-				Bukkit.getPluginManager().callEvent(
-						new PlayerChunkChangeEvent(e.getPlayer(), e.getFrom(),
-								e.getTo()));
+			if (new ChunkDataHandler()
+					.loadCurrentChunkData(e.getFrom())
+					.getMainOwner()
+					.equalsIgnoreCase(
+							new ChunkDataHandler().loadCurrentChunkData(
+									e.getTo()).getMainOwner())) {
+				return;
 			}
+		}
+
+		
+		if (new ChunkDataHandler().loadCurrentChunkData(e.getFrom()) != null) {
+			e.getPlayer().sendMessage(
+					ChatColor.GOLD
+							+ "You left a Chunk "
+							+ "\nfrom "
+							+ ChatColor.GREEN
+							+ new ChunkDataHandler().loadCurrentChunkData(
+									e.getFrom()).getMainOwner());
+		}
+		if (new ChunkDataHandler().loadCurrentChunkData(e.getTo()) != null) {
+			e.getPlayer().sendMessage(
+					ChatColor.GOLD
+							+ "You entered a Chunk "
+							+ "\nfrom "
+							+ ChatColor.GREEN
+							+ new ChunkDataHandler().loadCurrentChunkData(
+									e.getTo()).getMainOwner());
 		}
 
 	}
 
 	@EventHandler
-	public void playccE(PlayerChunkChangeEvent e) {
-
-		e.getPlayer().sendMessage(
-				ChatColor.GOLD + "You entered Chunk "
-						+ e.getTo().getChunk().toString() + "\n"
-						+ e.getTo().getChunk().getX() + " "
-						+ e.getTo().getChunk().getZ());
-	}
-
-	@EventHandler
 	public void modifyChunk(ChunkModifyEvent e) {
-		e.getPlayer().sendMessage("Chunk modifyed");
+		e.getPlayer().sendMessage(
+				e.getFlag().getKey() + " set to " + e.getFlag().getValue());
 	}
 
 	@EventHandler
@@ -109,6 +125,15 @@ public class PlayerActionEventListener implements Listener {
 					e.getPlayer().teleport(e.getFrom());
 				}
 			}
+			
+		}
+		if (e.getFrom().getChunk() != e.getTo().getChunk()) {
+			if (!e.isCancelled()) {
+
+				Bukkit.getPluginManager().callEvent(
+						new PlayerChunkChangeEvent(e.getPlayer(), e.getFrom(),
+								e.getTo()));
+			}
 		}
 
 	}
@@ -118,11 +143,11 @@ public class PlayerActionEventListener implements Listener {
 
 		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& e.getClickedBlock().getType().equals(Material.CHEST)) {
-			
+
 			if (new ChunkDataHandler().loadCurrentChunkData(e.getClickedBlock()
 					.getLocation()) != null) {
-				PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
-						.getClickedBlock().getLocation());
+				PlayerChunkData pcd = new ChunkDataHandler()
+						.loadCurrentChunkData(e.getClickedBlock().getLocation());
 
 				if (!pcd.getFlagByName("container").getValue()) {
 
@@ -139,4 +164,26 @@ public class PlayerActionEventListener implements Listener {
 
 	}
 
+	@EventHandler
+	public void onChat(AsyncPlayerChatEvent e) {
+
+		if (new ChunkDataHandler().loadCurrentChunkData(e.getPlayer()
+				.getLocation()) != null) {
+			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
+					.getPlayer().getLocation());
+
+			if (!pcd.getFlagByName("chat").getValue()) {
+
+				if (!(pcd.isMember(e.getPlayer().getName())
+						|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
+							.isOwner(e.getPlayer().getName()))) {
+					e.setCancelled(true);
+					e.getPlayer().sendMessage("Chataccess denied");
+				}
+			}
+		}
+	}
+
+	
+	
 }

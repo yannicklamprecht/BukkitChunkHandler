@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.ysl3000.listerner.ChatListener;
+import com.ysl3000.listerner.ChunkListener;
 import com.ysl3000.listerner.PlayerActionEventListener;
 
 public class Chunkster extends JavaPlugin {
@@ -18,6 +19,7 @@ public class Chunkster extends JavaPlugin {
 		new File("./ChunkData/").mkdir();
 		new ChatListener(this);
 		new PlayerActionEventListener(this);
+		new ChunkListener(this);
 	}
 
 	public void onDisable() {

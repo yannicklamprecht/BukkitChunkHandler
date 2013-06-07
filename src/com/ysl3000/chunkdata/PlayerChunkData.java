@@ -29,16 +29,29 @@ public class PlayerChunkData implements Serializable {
 
 	public String toString() {
 
-		return chunkname + " " + world + " " + point.getX() + " "
-				+ point.getZ() + " " + mainowner + " " + ownersToString() + " "
-				+ membersToString() + " " + getFlagsToString();
+		return world + " " + point.getX() + " " + point.getZ() + ChatColor.GRAY
+				+ "\nmainowner: " + ChatColor.RESET + mainowner
+				+ ChatColor.GRAY + "\nowners: " + ChatColor.RESET
+				+ ownersToString() + ChatColor.GRAY + "\nmembers: "
+				+ ChatColor.RESET + membersToString() + ChatColor.GRAY
+				+ "\nflags: " + getFlagsToString();
 
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @return if user mainowner of chunk
+	 */
 	public boolean isMainOwner(String name) {
-		return this.mainowner == name;
+		return this.mainowner.equalsIgnoreCase(name);
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @return if owner of Chunk
+	 */
 	public boolean isOwner(String name) {
 		for (String owner : this.getOwners()) {
 			if (owner.equalsIgnoreCase(name)) {
@@ -48,6 +61,11 @@ public class PlayerChunkData implements Serializable {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @return if user is a member of the chunk
+	 */
 	public boolean isMember(String name) {
 		for (String member : this.getMembers()) {
 			if (member.equalsIgnoreCase(name)) {
@@ -67,7 +85,7 @@ public class PlayerChunkData implements Serializable {
 	 */
 
 	public void setFlag(String name, boolean value) {
-		this.getFlagByName(name).changeValue(value);
+		this.getFlagByName(name).setValue(value);
 	}
 
 	public Flag getFlagByName(String name) {
@@ -80,10 +98,20 @@ public class PlayerChunkData implements Serializable {
 		return ref;
 	}
 
+	public boolean equalsFlag(String flag) {
+		for (Flag f : this.getFlags()) {
+			if (f.getKey().equalsIgnoreCase(flag)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * 
 	 * @return flags as an arraylist
 	 */
+
 	public ArrayList<Flag> getFlags() {
 		return flags;
 	}
@@ -93,7 +121,7 @@ public class PlayerChunkData implements Serializable {
 	 */
 	public void resetFlags() {
 
-		String[] defaultFlags = { "build", "container", "move" };
+		String[] defaultFlags = { "build", "container", "move", "chat" };
 		for (String s : defaultFlags) {
 			this.getFlags().add(new Flag(s, true));
 		}
@@ -108,7 +136,8 @@ public class PlayerChunkData implements Serializable {
 
 		String s = "";
 		for (Flag f : this.getFlags()) {
-			s += ChatColor.GREEN + f.getKey() + ": " + ChatColor.RED
+			s += ChatColor.GOLD + f.getKey() + ": "
+					+ (f.getValue() ? ChatColor.GREEN : ChatColor.RED)
 					+ f.getValue() + ChatColor.GREEN + ", ";
 		}
 
@@ -177,11 +206,29 @@ public class PlayerChunkData implements Serializable {
 
 	/**
 	 * Add an Owner to the chunk
-	 * 
-	 * @param owners
+	 * @param owner
+	 * @return success
 	 */
-	public void addOwner(String owners) {
-		this.owners.add(owners);
+
+	public boolean addOwner(String owners) {
+		if (!this.getOwners().contains(owners)) {
+			this.owners.add(owners);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Will remove a owner from a chunk
+	 * @param owner        
+	 * @return success
+	 */
+	public boolean removeOwner(String owner) {
+		if (this.getOwners().contains(owner)) {
+			this.getOwners().remove(owner);
+			return true;
+		}
+		return false;
 	}
 
 	// Members
@@ -211,25 +258,30 @@ public class PlayerChunkData implements Serializable {
 
 	/**
 	 * Will add a member to a chunk
-	 * 
 	 * @param member
+	 * @return success
 	 */
-	public void addMember(String member) {
+	public boolean addMember(String member) {
 
 		if (!this.getMembers().contains(member)) {
 			this.getMembers().add(member);
+			return true;
 		}
+		return false;
 	}
 
 	/**
 	 * Will remove a member from a chunk
-	 * 
 	 * @param member
+	 * @return succes
 	 */
-	public void removeMember(String member) {
+	 
+	public boolean removeMember(String member) {
 		if (this.getMembers().contains(member)) {
 			this.getMembers().remove(member);
+			return true;
 		}
+		return false;
 	}
 
 	/**

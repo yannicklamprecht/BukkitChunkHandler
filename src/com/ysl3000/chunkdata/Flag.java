@@ -2,7 +2,7 @@ package com.ysl3000.chunkdata;
 
 import java.io.Serializable;
 
-public class Flag implements Serializable{
+public class Flag implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String key;
@@ -21,10 +21,7 @@ public class Flag implements Serializable{
 		return this.key;
 	}
 
-	public void setValue(boolean value){
+	public void setValue(boolean value) {
 		this.value = value;
-	}
-	public void changeValue(boolean b) {
-		this.value = b;
 	}
 }
