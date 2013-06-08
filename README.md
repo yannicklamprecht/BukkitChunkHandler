@@ -12,14 +12,14 @@ Commands:
   
 Rights:
   - mainowner extends owner:
-  -- selling chunk
-  -- manage user <owner/member>
+   - selling chunk
+   - manage user <owner/member>
   
   - owner extends member:
-  -- modify flags
+   - modify flags
   
   - member:
-  -- build
-  -- chat
-  -- access container
-  -- move
+   - build
+   - chat
+   - access container
+   - move
