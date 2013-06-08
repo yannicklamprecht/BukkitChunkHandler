@@ -11,15 +11,15 @@ Commands:
   - /chm add <owner/member> <username>
   
 Rights:
-  mainowner extends owner:
-  - selling chunk
-  - manage user <owner/member>
+  - mainowner extends owner:
+  -- selling chunk
+  -- manage user <owner/member>
   
-  owner extends member:
-  - modify flags
+  - owner extends member:
+  -- modify flags
   
-  member:
-  - build
-  - chat
-  - access container
-  - move
+  - member:
+  -- build
+  -- chat
+  -- access container
+  -- move
