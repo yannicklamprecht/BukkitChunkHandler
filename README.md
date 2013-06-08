@@ -9,18 +9,17 @@ Commands:
   - /chm <flag> [move/build/container/chat]    //pvp will be added soon
   - /chm remove <owner/member> <username>
   - /chm add <owner/member> <username>
-  - 
   
 Rights:
   mainowner extends owner:
-    - selling chunk
-    - manage user <owner/member>
+  - selling chunk
+  - manage user <owner/member>
   
   owner extends member:
-    - modify flags
+  - modify flags
   
   member:
-    - build
-    - chat
-    - access container
-    - move
+  - build
+  - chat
+  - access container
+  - move
