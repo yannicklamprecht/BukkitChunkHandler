@@ -23,3 +23,6 @@ Rights:
    - chat
    - access container
    - move
+
+v 0.9:
+- each member/owner/mainowner has a personal flag
