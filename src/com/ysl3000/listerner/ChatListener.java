@@ -82,22 +82,19 @@ public class ChatListener implements Listener {
 			}
 
 			if (st[1].equalsIgnoreCase("flag")) {
-				
+
 				if (pcd.isMainOwner(e.getPlayer().getName())
 						|| pcd.isOwner(e.getPlayer().getName())) {
 					if (st.length < 3) {
 						e.getPlayer().sendMessage(
 								ChatColor.GREEN + "_____Flags_____\n");
-						e.getPlayer()
-								.sendMessage(
-										new ChunkDataHandler()
-												.loadCurrentChunkData(
-														e.getPlayer()
-																.getLocation())
-												.toString());
+						e.getPlayer().sendMessage(
+								new ChunkDataHandler().loadCurrentChunkData(
+										e.getPlayer().getLocation()).toString(
+										e.getPlayer().getName()));
 						return;
 					} else {
-						if (pcd.equalsFlag(st[2])) {
+						if (pcd.getChunkFlags().equalsFlag(st[2])) {
 							modifier(st, pcd, e.getPlayer());
 						} else {
 							e.getPlayer().sendMessage(
@@ -110,7 +107,8 @@ public class ChatListener implements Listener {
 									ChatColor.RED
 											+ "You're not allowed to use this command!");
 				}
-			} else if (st[1].equalsIgnoreCase("add") && pcd.isMainOwner(e.getPlayer().getName())) {
+			} else if (st[1].equalsIgnoreCase("add")
+					&& pcd.isMainOwner(e.getPlayer().getName())) {
 
 				if (st.length <= 3) {
 					e.getPlayer().sendMessage(
@@ -131,7 +129,8 @@ public class ChatListener implements Listener {
 					}
 				}
 
-			} else if (st[1].equalsIgnoreCase("remove")&& pcd.isMainOwner(e.getPlayer().getName())) {
+			} else if (st[1].equalsIgnoreCase("remove")
+					&& pcd.isMainOwner(e.getPlayer().getName())) {
 
 				if (st.length <= 3 || st.length >= 5) {
 					e.getPlayer().sendMessage(
@@ -150,20 +149,23 @@ public class ChatListener implements Listener {
 	private void modifier(String[] st, PlayerChunkData pcd, Player p) {
 
 		if (st.length == 4) {
-			pcd.getFlagByName(st[2]).setValue(Boolean.parseBoolean(st[3]));
+			pcd.getChunkFlags().getFlagByName(st[2])
+					.setValue(Boolean.parseBoolean(st[3]));
 			new ChunkDataHandler().write(pcd);
 			Bukkit.getServer()
 					.getPluginManager()
 					.callEvent(
 							new ChunkModifyEvent(p, p.getLocation().getChunk(),
-									pcd.getFlagByName(st[2]), true));
+									pcd.getChunkFlags().getFlagByName(st[2]),
+									true));
 		} else if (st.length > 4 || st.length == 3) {
 			p.sendMessage(ChatColor.GOLD
 					+ st[2]
 					+ ": "
-					+ (pcd.getFlagByName(st[2]).getValue() ? ChatColor.GREEN
+					+ (pcd.getChunkFlags().getFlagByName(st[2]).getValue() ? ChatColor.GREEN
 							: ChatColor.RED)
-					+ pcd.getFlagByName(st[2]).getValue().toString());
+					+ pcd.getChunkFlags().getFlagByName(st[2]).getValue()
+							.toString());
 		}
 
 	}

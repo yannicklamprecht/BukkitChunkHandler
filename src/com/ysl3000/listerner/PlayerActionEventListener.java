@@ -39,7 +39,6 @@ public class PlayerActionEventListener implements Listener {
 			}
 		}
 
-		
 		if (new ChunkDataHandler().loadCurrentChunkData(e.getFrom()) != null) {
 			e.getPlayer().sendMessage(
 					ChatColor.GOLD
@@ -75,7 +74,7 @@ public class PlayerActionEventListener implements Listener {
 			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
 					.getBlock().getLocation());
 
-			if (!pcd.getFlagByName("build").getValue()) {
+			if (!pcd.getChunkFlags().getFlagByName("build").getValue()) {
 
 				if (!(pcd.isMember(e.getPlayer().getName())
 						|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
@@ -95,7 +94,7 @@ public class PlayerActionEventListener implements Listener {
 			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
 					.getBlock().getLocation());
 
-			if (!pcd.getFlagByName("build").getValue()) {
+			if (!pcd.getChunkFlags().getFlagByName("build").getValue()) {
 
 				if (!(pcd.isMember(e.getPlayer().getName())
 						|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
@@ -114,7 +113,7 @@ public class PlayerActionEventListener implements Listener {
 			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
 					.getTo());
 
-			if (!pcd.getFlagByName("move").getValue()) {
+			if (!pcd.getChunkFlags().getFlagByName("move").getValue()) {
 
 				if (!(pcd.isMember(e.getPlayer().getName())
 						|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
@@ -125,7 +124,7 @@ public class PlayerActionEventListener implements Listener {
 					e.getPlayer().teleport(e.getFrom());
 				}
 			}
-			
+
 		}
 		if (e.getFrom().getChunk() != e.getTo().getChunk()) {
 			if (!e.isCancelled()) {
@@ -149,7 +148,7 @@ public class PlayerActionEventListener implements Listener {
 				PlayerChunkData pcd = new ChunkDataHandler()
 						.loadCurrentChunkData(e.getClickedBlock().getLocation());
 
-				if (!pcd.getFlagByName("container").getValue()) {
+				if (!pcd.getChunkFlags().getFlagByName("container").getValue()) {
 
 					if (!(pcd.isMember(e.getPlayer().getName())
 							|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
@@ -172,7 +171,7 @@ public class PlayerActionEventListener implements Listener {
 			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
 					.getPlayer().getLocation());
 
-			if (!pcd.getFlagByName("chat").getValue()) {
+			if (!pcd.getChunkFlags().getFlagByName("chat").getValue()) {
 
 				if (!(pcd.isMember(e.getPlayer().getName())
 						|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
@@ -184,6 +183,4 @@ public class PlayerActionEventListener implements Listener {
 		}
 	}
 
-	
-	
 }
