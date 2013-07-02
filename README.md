@@ -26,3 +26,4 @@ Rights:
 
 v 0.9:
 - each member/owner/mainowner has a personal flag
+- trees can't overgrow. to other chunks
