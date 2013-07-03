@@ -58,7 +58,7 @@ public class FlagContainer implements Serializable{
 	 */
 	public void resetFlags() {
 
-		String[] defaultFlags = { "build", "container", "move", "chat", "pvp" };
+		String[] defaultFlags = { "build", "container", "chat", "pvp" };
 		for (String s : defaultFlags) {
 			this.getFlags().add(new Flag(s, true));
 		}

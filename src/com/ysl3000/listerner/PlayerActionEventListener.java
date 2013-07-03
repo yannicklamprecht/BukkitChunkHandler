@@ -108,25 +108,28 @@ public class PlayerActionEventListener implements Listener {
 
 	@EventHandler
 	public void movee(PlayerMoveEvent e) {
-		if (new ChunkDataHandler().loadCurrentChunkData(e.getTo()) != null) {
 
-			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
-					.getTo());
-
-			if (!pcd.getChunkFlags().getFlagByName("move").getValue()) {
-
-				if (!(pcd.isMember(e.getPlayer().getName())
-						|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
-							.isOwner(e.getPlayer().getName()))) {
-					e.setCancelled(true);
-					e.getPlayer().sendMessage("Can't move into this chunk");
-
-					e.getPlayer().teleport(e.getFrom());
-				}
-			}
-
-		}
 		if (e.getFrom().getChunk() != e.getTo().getChunk()) {
+
+			/*if (new ChunkDataHandler().loadCurrentChunkData(e.getTo()) != null) {
+
+				PlayerChunkData pcd = new ChunkDataHandler()
+						.loadCurrentChunkData(e.getTo());
+
+				if (!pcd.getChunkFlags().getFlagByName("move").getValue()) {
+
+					if (!(pcd.isMember(e.getPlayer().getName())
+							|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
+								.isOwner(e.getPlayer().getName()))) {
+						e.setCancelled(true);
+						e.getPlayer().sendMessage("Can't move into this chunk");
+
+						e.getPlayer().teleport(e.getFrom());
+					}
+				}
+
+			}*/
+
 			if (!e.isCancelled()) {
 
 				Bukkit.getPluginManager().callEvent(

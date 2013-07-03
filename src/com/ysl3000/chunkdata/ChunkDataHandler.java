@@ -11,19 +11,21 @@ import java.io.OutputStream;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.ysl3000.chunkster.Chunkster;
+
 public class ChunkDataHandler {
 
 	private static String trenner = "_";
 
 	public PlayerChunkData loadCurrentChunkData(Location l) {
-		return this.read(l.getChunk().getWorld().getName(), l.getChunk().getX(), l.getChunk()
-				.getZ());
+		return this.read(l.getChunk().getWorld().getName(),
+				l.getChunk().getX(), l.getChunk().getZ());
 	}
 
 	public void write(PlayerChunkData data) {
 		OutputStream outputStream = null;
 		try {
-			outputStream = new FileOutputStream("./ChunkData/"
+			outputStream = new FileOutputStream(Chunkster.getPath()
 					+ data.getWorld() + trenner + data.getPoint().getX()
 					+ trenner + data.getPoint().getZ() + ".pcd");
 			ObjectOutputStream objectOutput = new ObjectOutputStream(
@@ -45,8 +47,8 @@ public class ChunkDataHandler {
 		PlayerChunkData session = null;
 		FileInputStream inputStream = null;
 		try {
-			inputStream = new FileInputStream("./ChunkData/" + world + trenner
-					+ x + trenner + z + ".pcd");
+			inputStream = new FileInputStream(Chunkster.getPath() + world
+					+ trenner + x + trenner + z + ".pcd");
 			ObjectInputStream objectInput = new ObjectInputStream(inputStream);
 			session = (PlayerChunkData) objectInput.readObject();
 			objectInput.close();
@@ -68,7 +70,7 @@ public class ChunkDataHandler {
 	}
 
 	public String[] listDir() {
-		File dir = new File("./ChunkData/");
+		File dir = new File(Chunkster.getPath());
 		String[] files = dir.list();
 		return files;
 	}
@@ -78,7 +80,7 @@ public class ChunkDataHandler {
 		PlayerChunkData session = null;
 		FileInputStream inputStream = null;
 		try {
-			inputStream = new FileInputStream("./ChunkData/" + name);
+			inputStream = new FileInputStream(Chunkster.getPath() + name);
 			ObjectInputStream objectInput = new ObjectInputStream(inputStream);
 			session = (PlayerChunkData) objectInput.readObject();
 			objectInput.close();
@@ -93,7 +95,7 @@ public class ChunkDataHandler {
 	}
 
 	public void deleteFile(Player p) {
-		File f = new File("./ChunkData/"
+		File f = new File(Chunkster.getPath()
 				+ p.getLocation().getChunk().getWorld().getName() + trenner
 				+ p.getLocation().getChunk().getX() + trenner
 				+ p.getLocation().getChunk().getZ() + ".pcd");
