@@ -2,10 +2,11 @@ package com.ysl3000.chunkster.event;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class ChunkEvent extends Event{
+public class ChunkEvent extends Event implements Cancellable{
 	private Player p;
 	private Chunk ch;
 	private boolean success;
@@ -28,7 +29,13 @@ public class ChunkEvent extends Event{
 	public Chunk getChunk(){
 		return ch;
 	}
-	public boolean successfully(){
+	@Override
+	public boolean isCancelled() {
 		return success;
+	}
+	@Override
+	public void setCancelled(boolean arg0) {
+		this.success = arg0;
+		
 	}
 }

@@ -2,20 +2,16 @@ package com.ysl3000.chunkdata;
 
 import java.io.Serializable;
 
-public class Point implements Serializable {
+public final class Point implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int x;
-	private int z;
+	private final int x;
+	private final int z;
 
 	public Point(int x, int z) {
-		this.setX(x);
-		this.setZ(z);
+		this.x = x;
+		this.z = z;
 	}
-
-	/**
-	 * @return the z
-	 */
 
 	/**
 	 * x–Coordinate from chunk
@@ -35,19 +31,8 @@ public class Point implements Serializable {
 		return z;
 	}
 
-	/**
-	 * @param x
-	 *            the x to set
-	 */
-	private void setX(int x) {
-		this.x = x;
+	public boolean equals(Point p) {
+		return (this.x == p.getX() && this.z == p.getZ());
 	}
 
-	/**
-	 * @param z
-	 *            the z to set
-	 */
-	private void setZ(int z) {
-		this.z = z;
-	}
 }

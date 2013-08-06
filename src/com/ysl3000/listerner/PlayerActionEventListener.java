@@ -12,8 +12,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.ysl3000.chunkdata.ChunkDataHandler;
 import com.ysl3000.chunkdata.PlayerChunkData;
+import com.ysl3000.chunkster.Chunkcacher;
 import com.ysl3000.chunkster.Chunkster;
 import com.ysl3000.chunkster.event.ChunkModifyEvent;
 import com.ysl3000.chunkster.event.PlayerChunkChangeEvent;
@@ -26,53 +26,62 @@ public class PlayerActionEventListener implements Listener {
 
 	@EventHandler
 	public void playccE(PlayerChunkChangeEvent e) {
-		if (new ChunkDataHandler().loadCurrentChunkData(e.getFrom()) != null
-				&& new ChunkDataHandler().loadCurrentChunkData(e.getTo()) != null) {
+		if (Chunkcacher.getChunkCacher().getDataByLocation(e.getFrom()) != null
+				&& Chunkcacher.getChunkCacher().getDataByLocation(e.getTo()) != null) {
 
-			if (new ChunkDataHandler()
-					.loadCurrentChunkData(e.getFrom())
+			if (Chunkcacher
+					.getChunkCacher()
+					.getDataByLocation(e.getFrom())
 					.getMainOwner()
 					.equalsIgnoreCase(
-							new ChunkDataHandler().loadCurrentChunkData(
-									e.getTo()).getMainOwner())) {
+							Chunkcacher.getChunkCacher()
+									.getDataByLocation(e.getTo())
+									.getMainOwner())) {
 				return;
 			}
 		}
 
-		if (new ChunkDataHandler().loadCurrentChunkData(e.getFrom()) != null) {
+		if (Chunkcacher.getChunkCacher().getDataByLocation(e.getFrom()) != null) {
 			e.getPlayer().sendMessage(
 					ChatColor.GOLD
 							+ "You left a Chunk "
 							+ "\nfrom "
 							+ ChatColor.GREEN
-							+ new ChunkDataHandler().loadCurrentChunkData(
-									e.getFrom()).getMainOwner());
+							+ Chunkcacher.getChunkCacher()
+									.getDataByLocation(e.getFrom())
+									.getMainOwner());
 		}
-		if (new ChunkDataHandler().loadCurrentChunkData(e.getTo()) != null) {
+		if (Chunkcacher.getChunkCacher().getDataByLocation(e.getTo()) != null) {
 			e.getPlayer().sendMessage(
 					ChatColor.GOLD
 							+ "You entered a Chunk "
 							+ "\nfrom "
 							+ ChatColor.GREEN
-							+ new ChunkDataHandler().loadCurrentChunkData(
-									e.getTo()).getMainOwner());
+							+ Chunkcacher.getChunkCacher()
+									.getDataByLocation(e.getTo())
+									.getMainOwner());
 		}
 
 	}
 
 	@EventHandler
 	public void modifyChunk(ChunkModifyEvent e) {
-		e.getPlayer().sendMessage(
-				e.getFlag().getKey() + " set to " + e.getFlag().getValue());
+		if(!e.isCancelled()){
+			e.getPlayer().sendMessage(
+					e.getFlag().getKey() + " set to " + e.getFlag().getValue());
+			
+		}else{
+			e.getPlayer().sendMessage("Modifing failed");
+		}
 	}
 
 	@EventHandler
 	public void breakBlock(BlockBreakEvent e) {
 
-		if (new ChunkDataHandler().loadCurrentChunkData(e.getBlock()
-				.getLocation()) != null) {
-			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
-					.getBlock().getLocation());
+		if (Chunkcacher.getChunkCacher().getDataByLocation(
+				e.getBlock().getLocation()) != null) {
+			PlayerChunkData pcd = Chunkcacher.getChunkCacher()
+					.getDataByLocation(e.getBlock().getLocation());
 
 			if (!pcd.getChunkFlags().getFlagByName("build").getValue()) {
 
@@ -88,11 +97,11 @@ public class PlayerActionEventListener implements Listener {
 
 	@EventHandler
 	public void build(BlockPlaceEvent e) {
-		if (new ChunkDataHandler().loadCurrentChunkData(e.getBlock()
-				.getLocation()) != null) {
+		if (Chunkcacher.getChunkCacher().getDataByLocation(
+				e.getBlock().getLocation()) != null) {
 
-			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
-					.getBlock().getLocation());
+			PlayerChunkData pcd = Chunkcacher.getChunkCacher()
+					.getDataByLocation(e.getBlock().getLocation());
 
 			if (!pcd.getChunkFlags().getFlagByName("build").getValue()) {
 
@@ -108,34 +117,10 @@ public class PlayerActionEventListener implements Listener {
 
 	@EventHandler
 	public void movee(PlayerMoveEvent e) {
-
 		if (e.getFrom().getChunk() != e.getTo().getChunk()) {
-
-			/*if (new ChunkDataHandler().loadCurrentChunkData(e.getTo()) != null) {
-
-				PlayerChunkData pcd = new ChunkDataHandler()
-						.loadCurrentChunkData(e.getTo());
-
-				if (!pcd.getChunkFlags().getFlagByName("move").getValue()) {
-
-					if (!(pcd.isMember(e.getPlayer().getName())
-							|| pcd.isMainOwner(e.getPlayer().getName()) || pcd
-								.isOwner(e.getPlayer().getName()))) {
-						e.setCancelled(true);
-						e.getPlayer().sendMessage("Can't move into this chunk");
-
-						e.getPlayer().teleport(e.getFrom());
-					}
-				}
-
-			}*/
-
-			if (!e.isCancelled()) {
-
-				Bukkit.getPluginManager().callEvent(
-						new PlayerChunkChangeEvent(e.getPlayer(), e.getFrom(),
-								e.getTo()));
-			}
+			Bukkit.getPluginManager().callEvent(
+					new PlayerChunkChangeEvent(e.getPlayer(), e.getFrom(), e
+							.getTo(), e.isCancelled()));
 		}
 
 	}
@@ -146,10 +131,10 @@ public class PlayerActionEventListener implements Listener {
 		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& e.getClickedBlock().getType().equals(Material.CHEST)) {
 
-			if (new ChunkDataHandler().loadCurrentChunkData(e.getClickedBlock()
-					.getLocation()) != null) {
-				PlayerChunkData pcd = new ChunkDataHandler()
-						.loadCurrentChunkData(e.getClickedBlock().getLocation());
+			if (Chunkcacher.getChunkCacher().getDataByLocation(
+					e.getClickedBlock().getLocation()) != null) {
+				PlayerChunkData pcd = Chunkcacher.getChunkCacher()
+						.getDataByLocation(e.getClickedBlock().getLocation());
 
 				if (!pcd.getChunkFlags().getFlagByName("container").getValue()) {
 
@@ -161,7 +146,6 @@ public class PlayerActionEventListener implements Listener {
 					}
 				}
 			}
-
 		}
 
 	}
@@ -169,10 +153,10 @@ public class PlayerActionEventListener implements Listener {
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
 
-		if (new ChunkDataHandler().loadCurrentChunkData(e.getPlayer()
-				.getLocation()) != null) {
-			PlayerChunkData pcd = new ChunkDataHandler().loadCurrentChunkData(e
-					.getPlayer().getLocation());
+		if (Chunkcacher.getChunkCacher().getDataByLocation(
+				e.getPlayer().getLocation()) != null) {
+			PlayerChunkData pcd = Chunkcacher.getChunkCacher()
+					.getDataByLocation(e.getPlayer().getLocation());
 
 			if (!pcd.getChunkFlags().getFlagByName("chat").getValue()) {
 
