@@ -10,7 +10,7 @@ public class PlayerChunkData implements Serializable {
 	private String chunkname;
 	private static final long serialVersionUID = 1L;
 	private String world;
-	private Point point;
+	private final Point point;
 	private String mainowner;
 	private ArrayList<String> owners;
 	private ArrayList<String> members;
@@ -23,7 +23,7 @@ public class PlayerChunkData implements Serializable {
 		this.setWorld(world);
 		this.owners = new ArrayList<String>();
 		this.members = new ArrayList<String>();
-		this.setPoint(new Point(x, z));
+		this.point = new Point(x, z);
 		this.chunkFlags = new FlagContainer();
 		this.playerflags = new ArrayList<PlayerChunkFlags>();
 	}
@@ -235,14 +235,6 @@ public class PlayerChunkData implements Serializable {
 	 */
 	public Point getPoint() {
 		return point;
-	}
-
-	/**
-	 * @param point
-	 *            the point to set
-	 */
-	private void setPoint(Point point) {
-		this.point = point;
 	}
 
 	/**

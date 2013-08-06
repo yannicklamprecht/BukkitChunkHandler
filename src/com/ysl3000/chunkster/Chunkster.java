@@ -14,18 +14,21 @@ public class Chunkster extends JavaPlugin {
 
 	Logger log;
 	private static String path = "./plugins/ChunkData/";
-
 	public void onEnable() {
 		log = Logger.getLogger("Minecraft");
 		log.info("Chunkster enabled");
 		new File(path).mkdir();
+		Chunkcacher.getChunkCacher().loadFiles();
 		new ChatListener(this);
 		new PlayerActionEventListener(this);
 		new ChunkListener(this);
 		new BlockEventListener(this);
+		new TimeCapsule(20000).start();
+		
 	}
 
 	public void onDisable() {
+		Chunkcacher.getChunkCacher().saveFiles();
 		log.info("disabled");
 	}
 

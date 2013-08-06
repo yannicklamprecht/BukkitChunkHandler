@@ -5,9 +5,8 @@ import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 
-public class FlagContainer implements Serializable{
+public class FlagContainer implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 	final private ArrayList<Flag> chunkflags;
 
