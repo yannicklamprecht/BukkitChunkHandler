@@ -3,6 +3,13 @@ Chunkster
 
 A chunk buying and selling system for Bukkit.
 
+License:
+
+CC by-nc-nd
+
+http://creativecommons.org/licenses/by-nc-nd/4.0/
+
+
 Commands:
   - /chunk
   - /unchunk
